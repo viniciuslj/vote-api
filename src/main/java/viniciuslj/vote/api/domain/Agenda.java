@@ -14,4 +14,8 @@ public class Agenda {
     private String subject;
 
     private String description;
+
+    @OneToOne(mappedBy = "agenda", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Session session;
 }

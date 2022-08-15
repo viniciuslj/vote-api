@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-session
+      author: viniciuslj
+      changes:
+        - createTable:
+            tableName: session
+            columns:
+              - column:
+                  name: agenda_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_session_agenda
+                    references: agenda(id)
+              - column:
+                  name: start
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: end
+                  type: datetime
+                  constraints:
+                    nullable: true
+
