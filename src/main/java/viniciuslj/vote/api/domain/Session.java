@@ -12,7 +12,10 @@ public class Session {
     @JsonIgnore
     private Long agendaId;
 
+    @Column(nullable = false)
     private LocalDateTime start;
+
+    @Column(nullable = false)
     private LocalDateTime end;
 
     @OneToOne(fetch = FetchType.LAZY)
