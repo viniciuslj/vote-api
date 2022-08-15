@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-member
+      author: viniciuslj
+      changes:
+        - createTable:
+            tableName: member
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey:  true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cpf
+                  type: varchar(11)
+                  constraints:
+                    nullable: false
+                    unique: true

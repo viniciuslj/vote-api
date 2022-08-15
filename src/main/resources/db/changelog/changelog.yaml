@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include:
       file: db/changelog/create-table-agenda.yaml
+  - include:
+      file: db/changelog/create-table-member.yaml
