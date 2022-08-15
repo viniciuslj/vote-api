@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-vote
+      author: viniciuslj
+      changes:
+        - createTable:
+            tableName: vote
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey:  true
+                    nullable: false
+              - column:
+                  name: agenda_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_vote_agenda
+                    references: agenda(id)
+              - column:
+                  name: member_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_vote_member
+                    references: member(id)
+              - column:
+                  name: response
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: voted_at
+                  type: datetime
+                  constraints:
+                    nullable: false
