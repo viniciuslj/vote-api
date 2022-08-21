@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-result
+      author: viniciuslj
+      changes:
+        - createTable:
+            tableName: result
+            columns:
+              - column:
+                  name: agenda_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_result_agenda
+                    references: agenda(id)
+              - column:
+                  name: approved
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: total_yes
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: total_no
+                  type: bigint
+                  constraints:
+                    nullable: false

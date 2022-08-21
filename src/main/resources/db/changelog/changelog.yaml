@@ -4,4 +4,6 @@ databaseChangeLog:
   - include:
       file: db/changelog/create-table-session.yaml
   - include:
+      file: db/changelog/create-table-result.yaml
+  - include:
       file: db/changelog/create-table-vote.yaml
