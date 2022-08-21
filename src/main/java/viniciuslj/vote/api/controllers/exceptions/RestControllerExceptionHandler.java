@@ -1,6 +1,5 @@
 package viniciuslj.vote.api.controllers.exceptions;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
@@ -55,7 +54,7 @@ public class RestControllerExceptionHandler {
                 );
     }
 
-    private @NotNull String joinAllDefaultErrors(List<ObjectError> objectErrorList) {
+    private String joinAllDefaultErrors(List<ObjectError> objectErrorList) {
         List<String> errors = objectErrorList.stream()
                 .map(error -> error.getDefaultMessage())
                 .collect(Collectors.toList());
