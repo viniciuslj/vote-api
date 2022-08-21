@@ -12,8 +12,7 @@ public class Session {
     private Long agendaId;
 
     @Column(nullable = false)
-    private LocalDateTime start;
+    private LocalDateTime startsAt;
 
-    @Column(nullable = false)
-    private LocalDateTime end;
+    private LocalDateTime endsAt;
 }

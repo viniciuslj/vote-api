@@ -14,12 +14,12 @@ databaseChangeLog:
                     foreignKeyName: fk_session_agenda
                     references: agenda(id)
               - column:
-                  name: start
+                  name: starts_at
                   type: datetime
                   constraints:
                     nullable: false
               - column:
-                  name: end
+                  name: ends_at
                   type: datetime
                   constraints:
                     nullable: true
