@@ -29,6 +29,6 @@ public class AgendaController {
 
     @GetMapping("{id}")
     public ResponseEntity<Agenda> findOne(@PathVariable Long id) {
-        return ResponseEntity.of(findOneAgendaService.execute(id));
+        return ResponseEntity.ok(findOneAgendaService.execute(id));
     }
 }
