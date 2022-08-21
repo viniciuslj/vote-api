@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import viniciuslj.vote.api.domain.Agenda;
 import viniciuslj.vote.api.services.agenda.CreateAgendaService;
+import viniciuslj.vote.api.services.agenda.FindOneAgendaService;
 import javax.validation.Valid;
 
 @RestController
@@ -12,9 +13,11 @@ import javax.validation.Valid;
 public class AgendaController {
 
     private final CreateAgendaService createAgendaService;
+    private final FindOneAgendaService findOneAgendaService;
 
-    public AgendaController(CreateAgendaService createAgendaService) {
+    public AgendaController(CreateAgendaService createAgendaService, FindOneAgendaService findOneAgendaService) {
         this.createAgendaService = createAgendaService;
+        this.findOneAgendaService = findOneAgendaService;
     }
 
     @PostMapping
@@ -24,8 +27,8 @@ public class AgendaController {
                 .body(createAgendaService.execute(agenda));
     }
 
-    @GetMapping("{id}/result")
-    public ResponseEntity<AgendaResultDTO> getResult(@PathVariable Long id) {
-        return ResponseEntity.ok(new AgendaResultDTO());
+    @GetMapping("{id}")
+    public ResponseEntity<Agenda> findOne(@PathVariable Long id) {
+        return ResponseEntity.of(findOneAgendaService.execute(id));
     }
 }
