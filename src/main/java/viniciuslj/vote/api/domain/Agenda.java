@@ -15,7 +15,7 @@ public class Agenda {
 
     private String description;
 
-    @OneToOne(mappedBy = "agenda", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn
     private Session session;
 }

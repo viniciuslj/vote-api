@@ -1,6 +1,5 @@
 package viniciuslj.vote.api.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,7 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 public class Session {
     @Id
-    @JsonIgnore
+    @PrimaryKeyJoinColumn
     private Long agendaId;
 
     @Column(nullable = false)
@@ -17,10 +16,4 @@ public class Session {
 
     @Column(nullable = false)
     private LocalDateTime end;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "agenda_id")
-    @JsonIgnore
-    private Agenda agenda;
 }
