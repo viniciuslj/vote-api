@@ -34,4 +34,11 @@ public class Session {
             throw new BusinessLogicException("End date and time must be after the start");
         }
     }
+
+    public void validateIsOpen() {
+        LocalDateTime now = LocalDateTime.now();
+        if (now.isBefore(getStartsAt()) || now.isAfter(getEndsAt())) {
+            throw new BusinessLogicException("The session is not open");
+        }
+    }
 }

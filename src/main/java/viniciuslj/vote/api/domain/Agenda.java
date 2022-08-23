@@ -1,6 +1,7 @@
 package viniciuslj.vote.api.domain;
 
 import lombok.Data;
+import viniciuslj.vote.api.services.exceptions.BusinessLogicException;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
@@ -24,4 +25,10 @@ public class Agenda {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn
     private Result result;
+
+    public void validateSessionExists() {
+        if (getSession() == null) {
+            throw new BusinessLogicException("Session not found");
+        }
+    }
 }

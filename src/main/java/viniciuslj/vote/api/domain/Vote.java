@@ -2,6 +2,7 @@ package viniciuslj.vote.api.domain;
 
 import lombok.Data;
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.time.Instant;
 
 @Data
@@ -11,15 +12,16 @@ public class Vote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    private Agenda agenda;
+    @Column(nullable = false)
+    private Long agendaId;
 
-    @ManyToOne(optional = false)
-    private Member member;
+    @Column(name = "member_cpf", length = 11, nullable = false)
+    @Pattern(regexp = "^\\d{11}$", message = "Invalid member CPF")
+    private String memberCPF;
 
     @Column(nullable = false)
     private Boolean response;
 
-    @Column(nullable = false)
+    @Column(updatable = false)
     private Instant votedAt;
 }

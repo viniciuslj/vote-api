@@ -21,12 +21,10 @@ databaseChangeLog:
                     foreignKeyName: fk_vote_agenda
                     references: agenda(id)
               - column:
-                  name: member_id
-                  type: bigint
+                  name: member_cpf
+                  type: varchar(11)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_vote_member
-                    references: member(id)
               - column:
                   name: response
                   type: boolean
@@ -37,3 +35,8 @@ databaseChangeLog:
                   type: datetime
                   constraints:
                     nullable: false
+
+        -  addUniqueConstraint:
+             tableName: vote
+             columnNames: agenda_id, member_cpf
+             constraintName: agenda_member_unique
