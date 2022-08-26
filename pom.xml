@@ -12,7 +12,7 @@
 
 	<groupId>viniciuslj</groupId>
 	<artifactId>vote-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>vote-api</name>
 	<description>vote-api</description>
 
