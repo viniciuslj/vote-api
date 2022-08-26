@@ -4,6 +4,7 @@ public final class Messages {
     public static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
 
     public static class Agenda {
+        public static final String ERROR_ID_NOT_NULL = "Agenda ID cannot be set";
         public static final String ERROR_SUBJECT_EMPTY = "The subject of the agenda cannot be empty";
         public static final String ERROR_NOT_FOUND = "Agenda not found";
     }
