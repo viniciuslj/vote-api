@@ -6,11 +6,11 @@ import java.time.Instant;
 
 @Getter
 public class StandardErrorResponse {
-    private Instant timestamp;
-    private Integer status;
-    private String error;
-    private String message;
-    private String path;
+    private final Instant timestamp;
+    private final Integer status;
+    private final String error;
+    private final String message;
+    private final String path;
 
     public StandardErrorResponse(HttpStatus httpStatus, String message, String path) {
         this.timestamp = Instant.now();

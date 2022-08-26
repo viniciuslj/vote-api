@@ -1,7 +1,9 @@
 package viniciuslj.vote.api.domain;
 
 import lombok.Data;
-import viniciuslj.vote.api.services.exceptions.BusinessLogicException;
+import viniciuslj.vote.api.Messages;
+import viniciuslj.vote.api.services.exceptions.EntityNotFoundException;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
@@ -13,7 +15,7 @@ public class Agenda {
     private Long id;
 
     @Column(nullable = false)
-    @NotBlank(message = "The subject of the agenda cannot be empty")
+    @NotBlank(message = Messages.Agenda.ERROR_SUBJECT_EMPTY)
     private String subject;
 
     private String description;
@@ -28,7 +30,7 @@ public class Agenda {
 
     public void validateSessionExists() {
         if (getSession() == null) {
-            throw new BusinessLogicException("Session not found");
+            throw new EntityNotFoundException(Messages.Session.ERROR_NOT_FOUND);
         }
     }
 }

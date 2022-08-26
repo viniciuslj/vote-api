@@ -1,12 +1,14 @@
 package viniciuslj.vote.api.controllers.exceptions;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import viniciuslj.vote.api.Messages;
 import viniciuslj.vote.api.services.exceptions.BusinessLogicException;
 import viniciuslj.vote.api.services.exceptions.EntityNotFoundException;
 import viniciuslj.vote.api.services.exceptions.UnknownServiceException;
@@ -59,7 +61,7 @@ public class RestControllerExceptionHandler {
 
     private String joinAllDefaultErrors(List<ObjectError> objectErrorList) {
         List<String> errors = objectErrorList.stream()
-                .map(error -> error.getDefaultMessage())
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.toList());
         return String.join(", ", errors);
     }
@@ -74,7 +76,7 @@ public class RestControllerExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new StandardErrorResponse(
                         HttpStatus.INTERNAL_SERVER_ERROR,
-                        UnknownServiceException.DEFAULT_MESSAGE,
+                        Messages.INTERNAL_SERVER_ERROR,
                         request.getRequestURI())
                 );
     }

@@ -1,6 +1,7 @@
 package viniciuslj.vote.api.domain;
 
 import lombok.Data;
+import viniciuslj.vote.api.Messages;
 import viniciuslj.vote.api.services.exceptions.BusinessLogicException;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,7 +15,7 @@ public class Session {
     private Long agendaId;
 
     @Column(nullable = false)
-    @NotNull(message = "Start date and time is required")
+    @NotNull(message = Messages.Session.ERROR_START_REQUIRED)
     private LocalDateTime startsAt;
 
     private LocalDateTime endsAt;
@@ -27,18 +28,18 @@ public class Session {
 
     public void validatePeriod() {
         if (!getStartsAt().isAfter(LocalDateTime.now())) {
-            throw new BusinessLogicException("Start date and time must be in the future");
+            throw new BusinessLogicException(Messages.Session.ERROR_START_NOT_FUTURE);
         }
 
         if (!getEndsAt().isAfter(getStartsAt())) {
-            throw new BusinessLogicException("End date and time must be after the start");
+            throw new BusinessLogicException(Messages.Session.ERROR_END_NOT_AFTER_START);
         }
     }
 
     public void validateIsOpen() {
         LocalDateTime now = LocalDateTime.now();
         if (now.isBefore(getStartsAt()) || now.isAfter(getEndsAt())) {
-            throw new BusinessLogicException("The session is not open");
+            throw new BusinessLogicException(Messages.Session.ERROR_NOT_OPEN);
         }
     }
 }

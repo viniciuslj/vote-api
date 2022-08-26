@@ -1,13 +1,13 @@
 package viniciuslj.vote.api.services.exceptions;
 
-public class UnknownServiceException extends RuntimeException {
-    public static final String DEFAULT_MESSAGE = "Internal Server Error";
+import viniciuslj.vote.api.Messages;
 
+public class UnknownServiceException extends RuntimeException {
     public UnknownServiceException(String message) {
         super(message);
     }
 
     public UnknownServiceException() {
-        super(DEFAULT_MESSAGE);
+        super(Messages.INTERNAL_SERVER_ERROR);
     }
 }

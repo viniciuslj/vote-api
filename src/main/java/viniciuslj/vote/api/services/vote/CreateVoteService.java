@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import viniciuslj.vote.api.Messages;
 import viniciuslj.vote.api.domain.Agenda;
 import viniciuslj.vote.api.domain.Vote;
 import viniciuslj.vote.api.repository.AgendaRepository;
@@ -23,8 +24,9 @@ public class CreateVoteService {
         log.debug("Create Vote ({})", vote);
 
         try {
-            Agenda agenda = agendaRepository.findById(vote.getAgendaId())
-                    .orElseThrow(() -> new EntityNotFoundException("Agenda not found"));
+            Agenda agenda = agendaRepository
+                    .findById(vote.getAgendaId())
+                    .orElseThrow(() -> new EntityNotFoundException(Messages.Agenda.ERROR_NOT_FOUND));
 
             agenda.validateSessionExists();
             agenda.getSession().validateIsOpen();
@@ -36,7 +38,7 @@ public class CreateVoteService {
             throw e;
 
         } catch (DataIntegrityViolationException e) {
-            throw new BusinessLogicException("The member has already voted on this agenda");
+            throw new BusinessLogicException(Messages.Vote.ERROR_MEMBER_VOTE_EXISTS);
         }
     }
 }
