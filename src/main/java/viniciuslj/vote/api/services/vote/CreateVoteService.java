@@ -34,9 +34,6 @@ public class CreateVoteService {
             vote.setVotedAt(Instant.now());
             return voteRepository.save(vote);
 
-        } catch (BusinessLogicException e) {
-            throw e;
-
         } catch (DataIntegrityViolationException e) {
             throw new BusinessLogicException(Messages.Vote.ERROR_MEMBER_VOTE_EXISTS);
         }

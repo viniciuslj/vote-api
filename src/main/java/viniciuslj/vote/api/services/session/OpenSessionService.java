@@ -33,9 +33,6 @@ public class OpenSessionService {
 
             return sessionRepository.save(session);
 
-        } catch (BusinessLogicException e) {
-            throw e;
-
         } catch (DataIntegrityViolationException e) {
             if (relationshipViolation.check(e, Session.class, Agenda.class)){
                 throw new EntityNotFoundException(Messages.Agenda.ERROR_NOT_FOUND);
