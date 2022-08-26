@@ -1,5 +1,7 @@
 package viniciuslj.vote.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import viniciuslj.vote.api.Messages;
 import viniciuslj.vote.api.services.exceptions.BusinessLogicException;
@@ -14,10 +16,14 @@ public class Session {
     @PrimaryKeyJoinColumn
     private Long agendaId;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @ApiModelProperty(example = "2030-02-26T09:30:00")
     @Column(nullable = false)
     @NotNull(message = Messages.Session.ERROR_START_REQUIRED)
     private LocalDateTime startsAt;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @ApiModelProperty(example = "2030-02-26T13:30:00")
     private LocalDateTime endsAt;
 
     public void setDefaultEndsAtIfNull() {
