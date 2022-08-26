@@ -1,5 +1,6 @@
 package viniciuslj.vote.api.domain;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import javax.persistence.*;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.Map;
 public class Result {
     @Id
     @PrimaryKeyJoinColumn
+    @ApiModelProperty(hidden = true)
     private Long agendaId;
 
     @Column(nullable = false)
