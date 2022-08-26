@@ -1,5 +1,6 @@
 package viniciuslj.vote.api.domain;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import viniciuslj.vote.api.Messages;
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.time.Instant;
 public class Vote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(hidden = true)
     private Long id;
 
     @Column(nullable = false)
@@ -24,5 +26,6 @@ public class Vote {
     private Boolean response;
 
     @Column(updatable = false)
+    @ApiModelProperty(hidden = true)
     private Instant votedAt;
 }
