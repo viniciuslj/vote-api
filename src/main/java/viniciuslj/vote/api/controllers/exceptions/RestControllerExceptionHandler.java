@@ -21,56 +21,44 @@ import java.util.stream.Collectors;
 @Slf4j
 public class RestControllerExceptionHandler {
 
+    private ResponseEntity<StandardErrorResponse> makeResponse(
+            HttpStatus httpStatus, String message, HttpServletRequest request) {
+
+        return ResponseEntity.status(httpStatus)
+                .body(new StandardErrorResponse(
+                        httpStatus,
+                        message,
+                        request.getRequestURI())
+                );
+    }
+
     @ExceptionHandler
     public ResponseEntity<StandardErrorResponse> handleEntityNotFound(
             EntityNotFoundException exception,
             HttpServletRequest request) {
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new StandardErrorResponse(
-                        HttpStatus.NOT_FOUND,
-                        exception.getMessage(),
-                        request.getRequestURI())
-                );
+        return makeResponse(HttpStatus.NOT_FOUND, exception.getMessage(), request);
     }
 
     @ExceptionHandler
     public ResponseEntity<StandardErrorResponse> handleBusinessLogic(
             BusinessLogicException exception,
             HttpServletRequest request) {
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new StandardErrorResponse(
-                        HttpStatus.BAD_REQUEST,
-                        exception.getMessage(),
-                        request.getRequestURI())
-                );
+        return makeResponse(HttpStatus.BAD_REQUEST, exception.getMessage(), request);
     }
 
     @ExceptionHandler
     public ResponseEntity<StandardErrorResponse> handleUnauthorized(
             UnauthorizedException exception,
             HttpServletRequest request) {
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new StandardErrorResponse(
-                        HttpStatus.UNAUTHORIZED,
-                        exception.getMessage(),
-                        request.getRequestURI())
-                );
+        return makeResponse(HttpStatus.UNAUTHORIZED, exception.getMessage(), request);
     }
 
     @ExceptionHandler
     public ResponseEntity<StandardErrorResponse> handleMethodArgumentNotValid(
             MethodArgumentNotValidException exception,
             HttpServletRequest request) {
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new StandardErrorResponse(
-                        HttpStatus.BAD_REQUEST,
-                        joinAllDefaultErrors(exception.getBindingResult().getAllErrors()),
-                        request.getRequestURI())
-                );
+        String message = joinAllDefaultErrors(exception.getBindingResult().getAllErrors());
+        return makeResponse(HttpStatus.BAD_REQUEST, message, request);
     }
 
     private String joinAllDefaultErrors(List<ObjectError> objectErrorList) {
@@ -87,11 +75,6 @@ public class RestControllerExceptionHandler {
 
         log.error(exception.getMessage());
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new StandardErrorResponse(
-                        HttpStatus.INTERNAL_SERVER_ERROR,
-                        Messages.INTERNAL_SERVER_ERROR,
-                        request.getRequestURI())
-                );
+        return makeResponse(HttpStatus.INTERNAL_SERVER_ERROR, Messages.INTERNAL_SERVER_ERROR, request);
     }
 }
