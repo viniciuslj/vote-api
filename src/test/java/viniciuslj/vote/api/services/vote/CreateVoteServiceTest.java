@@ -16,6 +16,9 @@ import viniciuslj.vote.api.repository.AgendaRepository;
 import viniciuslj.vote.api.repository.VoteRepository;
 import viniciuslj.vote.api.services.exceptions.BusinessLogicException;
 import viniciuslj.vote.api.services.exceptions.EntityNotFoundException;
+import viniciuslj.vote.api.services.exceptions.UnauthorizedException;
+import viniciuslj.vote.api.vendor.services.user.UserInformation;
+import viniciuslj.vote.api.vendor.services.user.UserInformationService;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -30,6 +33,9 @@ class CreateVoteServiceTest {
 
     @Mock
     private VoteRepository voteRepository;
+
+    @Mock
+    private UserInformationService userInformationService;
 
     @Mock
     private AgendaRepository agendaRepository;
@@ -69,6 +75,14 @@ class CreateVoteServiceTest {
         return session;
     }
 
+    private UserInformation makeUserInformation(boolean valid) {
+        return UserInformation.builder()
+                .status(valid ?
+                        UserInformation.STATUS.ABLE :
+                        UserInformation.STATUS.UNABLE
+                ).build();
+    }
+
     @Test
     public void shouldCreateVote() {
         Agenda agenda = makeValidAgenda(faker);
@@ -76,6 +90,7 @@ class CreateVoteServiceTest {
         Vote vote = makeValidVote(faker, agenda.getId());
         Agenda spyAgenda = spy(agenda);
 
+        given(userInformationService.get(vote.getMemberCPF())).willReturn(makeUserInformation(true));
         given(agendaRepository.findById(agenda.getId())).willReturn(Optional.of(spyAgenda));
         given(voteRepository.save(vote))
                 .will(invocationOnMock -> invocationOnMock.getArgument(0));
@@ -88,7 +103,27 @@ class CreateVoteServiceTest {
         then(agendaRepository).should().findById(agenda.getId());
         then(spyAgenda).should().validateSessionExists();
         then(agenda.getSession()).should().validateIsOpen();
+        then(userInformationService).should().get(vote.getMemberCPF());
         then(voteRepository).should().save(vote);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenUserUnauthorized() {
+        Agenda agenda = makeValidAgenda(faker);
+        agenda.setSession(spy(makeValidSession(faker, agenda)));
+        Vote vote = makeValidVote(faker, agenda.getId());
+        Agenda spyAgenda = spy(agenda);
+
+        given(userInformationService.get(vote.getMemberCPF())).willReturn(makeUserInformation(false));
+        given(agendaRepository.findById(agenda.getId())).willReturn(Optional.of(spyAgenda));
+
+        UnauthorizedException exception = assertThrows(UnauthorizedException.class, () ->
+                createVoteService.execute(vote)
+        );
+
+        assertEquals(Messages.Vote.ERROR_UNAUTHORIZED_MEMBER, exception.getMessage());
+        then(userInformationService).should().get(vote.getMemberCPF());
+        then(voteRepository).should(never()).save(any(Vote.class));
     }
 
     @Test

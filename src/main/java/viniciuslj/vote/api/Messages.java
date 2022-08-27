@@ -21,5 +21,6 @@ public final class Messages {
     public static class Vote {
         public static final String ERROR_MEMBER_VOTE_EXISTS = "The member has already voted on this agenda";
         public static final String ERROR_INVALID_CPF = "Invalid member CPF";
+        public static final String ERROR_UNAUTHORIZED_MEMBER = "Unauthorized Member";
     }
 }
