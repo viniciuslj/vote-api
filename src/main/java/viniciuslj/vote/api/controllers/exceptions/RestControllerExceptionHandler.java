@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import viniciuslj.vote.api.Messages;
 import viniciuslj.vote.api.services.exceptions.BusinessLogicException;
 import viniciuslj.vote.api.services.exceptions.EntityNotFoundException;
+import viniciuslj.vote.api.services.exceptions.UnauthorizedException;
 import viniciuslj.vote.api.services.exceptions.UnknownServiceException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -41,6 +42,19 @@ public class RestControllerExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new StandardErrorResponse(
                         HttpStatus.BAD_REQUEST,
+                        exception.getMessage(),
+                        request.getRequestURI())
+                );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<StandardErrorResponse> handleUnauthorized(
+            UnauthorizedException exception,
+            HttpServletRequest request) {
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new StandardErrorResponse(
+                        HttpStatus.UNAUTHORIZED,
                         exception.getMessage(),
                         request.getRequestURI())
                 );

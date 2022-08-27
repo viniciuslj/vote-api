@@ -11,6 +11,10 @@ import viniciuslj.vote.api.repository.AgendaRepository;
 import viniciuslj.vote.api.repository.VoteRepository;
 import viniciuslj.vote.api.services.exceptions.BusinessLogicException;
 import viniciuslj.vote.api.services.exceptions.EntityNotFoundException;
+import viniciuslj.vote.api.services.exceptions.UnauthorizedException;
+import viniciuslj.vote.api.vendor.services.user.UserInformation;
+import viniciuslj.vote.api.vendor.services.user.UserInformationService;
+
 import java.time.Instant;
 
 @Service
@@ -19,6 +23,7 @@ import java.time.Instant;
 public class CreateVoteService {
     private final VoteRepository voteRepository;
     private final AgendaRepository agendaRepository;
+    private final UserInformationService userInformationService;
 
     public Vote execute(Vote vote) {
         log.debug("Create Vote ({})", vote);
@@ -31,11 +36,24 @@ public class CreateVoteService {
             agenda.validateSessionExists();
             agenda.getSession().validateIsOpen();
 
+            if (!memberIsAuthorized(vote.getMemberCPF())) {
+                throw new UnauthorizedException(Messages.Vote.ERROR_UNAUTHORIZED_MEMBER);
+            }
+
             vote.setVotedAt(Instant.now());
             return voteRepository.save(vote);
 
         } catch (DataIntegrityViolationException e) {
             throw new BusinessLogicException(Messages.Vote.ERROR_MEMBER_VOTE_EXISTS);
+        }
+    }
+
+    private boolean memberIsAuthorized(String memberCPF) {
+        try {
+            return userInformationService.get(memberCPF).getStatus()
+                    .equals(UserInformation.STATUS.ABLE);
+        } catch (UnauthorizedException exception) {
+            return false;
         }
     }
 }
