@@ -1,0 +1,11 @@
+version: 2
+
+jobs:
+  build:
+
+  docker:
+    - image: openjdk:18.0.2
+
+  steps:
+    - checkout
+    - run: ./mvnw clean install
