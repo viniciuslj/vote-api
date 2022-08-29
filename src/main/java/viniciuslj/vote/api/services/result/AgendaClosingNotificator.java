@@ -13,7 +13,7 @@ import viniciuslj.vote.api.domain.Result;
 @Service
 public class AgendaClosingNotificator implements AgendaClosingListener{
 
-    @Value(value = "${results.topic.name}")
+    @Value(value = "${kafka.results.topic.name}")
     private String resultsTopicName;
 
     private final KafkaTemplate<String, Result> kafkaTemplate;
@@ -26,7 +26,10 @@ public class AgendaClosingNotificator implements AgendaClosingListener{
 
     @Override
     public void update(Result result) {
-        ListenableFuture<SendResult<String, Result>> future = kafkaTemplate.send(resultsTopicName, result);
+        ListenableFuture<SendResult<String, Result>> future = kafkaTemplate.send(
+                resultsTopicName,
+                result.getAgendaId().toString(),
+                result);
 
         future.addCallback(new ListenableFutureCallback<>() {
             @Override
