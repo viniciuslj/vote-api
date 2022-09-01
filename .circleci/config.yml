@@ -10,11 +10,11 @@ jobs:
       - run:
           command: chmod +x mvnw
       - run:
-          name: Build and Tests
+          name: Build and Test
           command: ./mvnw clean package
       - run:
           name: Analyze on SonarCloud
-          command: ./mvnw verify sonar:sonar -Dsonar.projectKey=viniciuslj_vote-api
+          command: ./mvnw verify -Pcoverage sonar:sonar -Dsonar.projectKey=viniciuslj_vote-api
 
 workflows:
   main:
